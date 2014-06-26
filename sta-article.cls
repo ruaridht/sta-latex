@@ -17,7 +17,7 @@
 %% This work consists of the file: sta-thesis.cls
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{sta-letter}[2012/10/11 v2012.10.11 sta-letter]
+\ProvidesClass{sta-article}[2012/10/11 v2012.10.11 sta-article]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% LaTeX class for writing letters, adhereing to the University of St
 %% Andrews corporate guidelines.
@@ -48,23 +48,11 @@
 
 \newcommand{\department}[1]{\gdef\STACS@department{#1}}
 \newcommand{\address}[1]{\gdef\STACS@address{#1}}
-\newcommand{\jobtitle}[1]{\gdef\STACS@jobtitle{#1}}
 \newcommand{\email}[1]{\gdef\STACS@email{#1}}
 \newcommand{\logo}[1]{\gdef\STACS@logo{#1}}
 \newcommand{\tel}[1]{\gdef\STACS@tel{#1}}
 \newcommand{\fax}[1]{\gdef\STACS@fax{#1}}
 \newcommand{\www}[1]{\gdef\STACS@www{#1}}
-
-\newcommand{\emailTo}[1]{\href{mailto:#1}{#1}}
-
-\newcommand{\charityline}{The University of St Andrews is a charity registered in Scotland. No: SC013532AD}
-
-\newcommand{\recipient}[1]{\gdef\STACS@recipient{#1}}
-\newcommand{\opening}[1]{\gdef\STACS@opening{#1}}
-\newcommand{\closing}[1]{\gdef\STACS@closing{#1}}
-
-\newcommand{\subject}[1]{%
-\vspace{-2em}\begin{center}\bfseries#1\end{center}}
 
 %% -------------------------------------------------------------- [ Paper Size ]
 
@@ -80,28 +68,29 @@
 \setlength{\parindent}{0pt}
 
 \fixpdflayout
-
+\setsecnumdepth{subsubsection}
+\settocdepth{subsection}
+\headstyles{komalike}
 %% ------------------------------------------------------- [ Header and Footer ]
 
 \definecolor{sta-grey-print}{cmyk}{0.0, 0.2, 0.0, 0.68}
 \definecolor{sta-blue}{RGB}{0,83,155}
 \origdate
 \hypersetup{%
-  linkcolor=sta-blue,
+  linkcolor=sta-blue, 
   anchorcolor=sta-blue,
-  citecolor=sta-blue,
+  citecolor=sta-blue, 
   urlcolor=sta-grey-print
 }
 \makepagestyle{sta-frontpage}
 
 \makeoddhead{sta-frontpage}{%
-\includegraphics[width=65mm]{\STACS@logo}
-\\[7mm]
-\hspace*{9mm}
+\includegraphics[width=\textwidth]{\STACS@logo}
+\vspace*{5mm}
+\hspace*{14mm}
 \Large
 \begin{tabular}{l}
 \STACS@department{}\\
-\@author, \STACS@jobtitle\\
 \end{tabular}
 }{}{}
 
@@ -109,15 +98,14 @@
 
 \makefootrule{sta-frontpage}{\textwidth}{1pt}{1.5mm}
 
-\makeoddfoot{sta-frontpage}{\color{sta-grey-print}
+\makeoddfoot{sta-frontpage}{}{\color{sta-grey-print}
 \hspace{14mm}
-\begin{tabular}{l}
+\begin{tabular}{c}
 \STACS@address\\
-T:~\STACS@tel~F:\xspace\STACS@fax~E:~\href{mailto:\STACS@email}{\STACS@email}\\
-W:~\STACS@www\\[0.5em]
-\scriptsize\charityline\\
+T:~\STACS@tel:\xspace\STACS@fax\\[0.5em]
+\scriptsize The University of St Andrews is a charity registered in Scotland. No: SC013532AD\\
 \end{tabular}
-}{}{}
+}{}
 
 \makeheadfootruleprefix{sta-frontpage}
    {\color{sta-grey-print}}
@@ -130,18 +118,20 @@ W:~\STACS@www\\[0.5em]
 \pagestyle{sta-normalpage}
 
 %% ------------------------------------------------------------- [ Letter Body ]
-\NewEnviron{letter}{%
+
+\AtBeginDocument{%
 \thispagestyle{sta-frontpage}
 \sffamily
 \pagestyle{sta-normalpage}
-\begin{raggedright}
-\STACS@recipient\\[2em]
-Date:~{\@date}\\[2em]
-\end{raggedright}
-\STACS@opening\newline
-\BODY
-\vspace{2em}
-\STACS@closing
 }
+
+\renewcommand{\maketitle}{
+  \begin{center}
+    \LARGE\thetitle
+  \end{center}
+  \begin{center}
+    \large\theauthor
+    \par\thedate
+  \end{center}}
 
 \endinput
